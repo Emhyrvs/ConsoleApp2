@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleApp2
@@ -146,16 +147,42 @@ namespace ConsoleApp2
         public void Showorders()
         {
             
-            var o = _context.orders.Include("store").Include("staff").Include("order_items").OrderByDescending(a=>a.order_id).First();
+            var ord = _context.orders.Include("store").Include("staff").Include("order_items").OrderByDescending(a=>a.order_id);
 
-         
+
+            foreach (var o in ord)
+            {
+
                 Console.WriteLine($"{o.order_id} {o.required_date} {o.store.store_name} {o.staff.first_name} {o.staff.last_name}");
 
-            foreach(var a in o.order_items)
-            {
-                Console.WriteLine($"{ a.product.product_name} {a.product.brand.brand_name } {a.quantity} {a.list_price}" );
+                foreach (var a in o.order_items)
+                {
+                    Console.WriteLine($"{a.product.product_name} {a.product.brand.brand_name} {a.quantity} {a.list_price}");
+                }
             }
             
+
+        }
+        public  void Add_Order2()
+        {
+
+            order_items oi = _context.order_items.OrderByDescending(a=>a.order_id).FirstOrDefault();
+            order order1 = _context.orders.OrderByDescending(a => a.order_id).FirstOrDefault();
+
+            int c = 0;
+            while (1000 > c)
+            {
+
+                order1.order_items.Add(oi);
+
+                _context.order_items.Add(oi);
+
+                _context.orders.Add(order1);
+                 _context.SaveChangesAsync();
+                Thread.Sleep(3000);
+                c++;
+            }
+           
 
         }
 

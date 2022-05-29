@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static  void Main(string[] args)
         {
             Sklep context = new Sklep();
 
@@ -21,6 +22,8 @@ namespace ConsoleApp2
                 Console.WriteLine("Wypisz wszystkie produkty 2");
                 Console.WriteLine("Dodaj zamówienie 3");
                 Console.WriteLine("wypisz ostanie zamowienie 4");
+                Console.WriteLine("Zapytania cykliczne 5");
+                Console.WriteLine("Dodoawanie duzo rekordów 6");
                 var a = int.Parse(Console.ReadLine());
                 if (a == 1)
                 {
@@ -40,8 +43,27 @@ namespace ConsoleApp2
                 {
                     operacje.Showorders();
                 }
+                else if ( a==5)
+                {
+                   int c = 0;
+                    while(1000 > c)
+                    {
+                        operacje.Showorders();
 
-                        }
+                        Thread.Sleep(1000);
+                        operacje.ShowAllproducts();
+                        Thread.Sleep(1000);
+
+                    }
+                }
+                else if (a == 6)
+                {
+                   
+                    operacje.Add_Order2();
+                }
+
+
+            }
 
            
         }
